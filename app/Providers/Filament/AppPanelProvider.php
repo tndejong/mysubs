@@ -20,14 +20,18 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AppPanelProvider extends PanelProvider
 {
+    /**
+     * Default panel configuration.
+     */
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->id('app')
             ->path('/')
             ->login()
+            ->brandLogo(fn() => auth()->user()?->organisation?->logo ?? null)
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Stone,
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
