@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasCurrentTenantLabel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -9,7 +11,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Organisation extends Model implements HasMedia
+class Organisation extends Model implements HasMedia, HasAvatar, HasCurrentTenantLabel
 {
     use InteractsWithMedia;
 
@@ -41,11 +43,51 @@ class Organisation extends Model implements HasMedia
     }
 
     /**
-     * Relation with owners of organisation.
+     * Get organisation avater
+     */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Current tenant label
+     */
+    public function getCurrentTenantLabel(): string
+    {
+        return 'Active';
+    }
+
+    /**
+     * Belongs to many users
      */
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Belongs to many members
+     */
+    public function members()
+    {
+        return $this->hasMany(Member::class);
+    }
+
+    /**
+     * Has Many roles
+     */
+    public function roles()
+    {
+        return $this->hasMany(Role::class, 'organisation_id');
+    }
+
+    /**
+     * Has many prepaid cards
+     */
+    public function prepaidCards()
+    {
+        return $this->hasMany(PrepaidCard::class, 'organisation_id');
     }
 
     /**
@@ -54,8 +96,17 @@ class Organisation extends Model implements HasMedia
     public function logo(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getMedia()->firstWhere('name', 'logo')->getUrl('logo')
+            get: fn () => $this->getFirstMediaUrl('logo') ?? ''
         );
+    }
+
+    /**
+     * Register logo media collection.
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('logo')
+                ->singleFile();
     }
 
     /**

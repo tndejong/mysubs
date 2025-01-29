@@ -5,7 +5,6 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\OrganisationResource\Pages;
 use App\Filament\Admin\Resources\OrganisationResource\RelationManagers;
 use App\Models\Organisation;
-use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -29,7 +28,7 @@ class OrganisationResource extends Resource
                     ->label('Name')
                     ->required()
                     ->unique(ignoreRecord: true),
-                SpatieMediaLibraryFileUpload::make('logo')->conversion('logo')
+                SpatieMediaLibraryFileUpload::make('logo')->collection('logo')->conversion('logo')
                     ->label('Logo')
                     ->required(),
                 TextInput::make('slug')
@@ -65,7 +64,7 @@ class OrganisationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\UsersRelationManager::class,
         ];
     }
 

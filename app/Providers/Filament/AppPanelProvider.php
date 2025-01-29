@@ -2,7 +2,12 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Tenancy\EditOrganisationProfile;
+use App\Filament\Pages\Tenancy\RegisterOrganisation;
+use App\Models\Organisation;
 use Filament\Http\Middleware\Authenticate;
+use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,16 +34,22 @@ class AppPanelProvider extends PanelProvider
             ->id('app')
             ->path('/')
             ->login()
-            ->brandLogo(fn() => auth()->user()?->organisation?->logo ?? null)
             ->colors([
                 'primary' => Color::Stone,
             ])
-            ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
-            ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
+            ->tenantMenu(true)
+            ->tenant(Organisation::class, ownershipRelationship: 'organisation', slugAttribute: 'slug')
+            ->tenantMiddleware([
+                SyncShieldTenant::class,
+            ], isPersistent: true)
+            ->tenantRegistration(RegisterOrganisation::class)
+            ->tenantProfile(EditOrganisationProfile::class)
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                Pages\Dashboard::class
             ])
-            ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
@@ -53,6 +64,9 @@ class AppPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
