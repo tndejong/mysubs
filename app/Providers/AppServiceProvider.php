@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Listeners\UpdateLatestTenantIdListener;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Permission;
 use App\Models\Role;
+use Filament\Events\TenantSet;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,5 +32,9 @@ class AppServiceProvider extends ServiceProvider
         app(\Spatie\Permission\PermissionRegistrar::class)
             ->setPermissionClass(Permission::class)
             ->setRoleClass(Role::class);
+
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('mollie', \SocialiteProviders\Mollie\Provider::class);
+        });
     }
 }

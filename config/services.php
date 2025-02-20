@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'mollie' => [
+        'client_id' => env('MOLLIE_CLIENT_ID'),
+        'client_secret' => env('MOLLIE_CLIENT_SECRET'),
+        'redirect' => env('MOLLIE_REDIRECT_URI'),
+    ]
 ];

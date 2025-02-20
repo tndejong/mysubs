@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\MollieOAuth;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasCurrentTenantLabel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -13,10 +14,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Organisation extends Model implements HasMedia, HasAvatar, HasCurrentTenantLabel
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, MollieOAuth;
 
     protected $fillable = [
         'name',
+        'mollie_access_token',
+        'mollie_refresh_token',
+        'mollie_token_expires_at',
     ];
 
     /**

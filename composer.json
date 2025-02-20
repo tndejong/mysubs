@@ -12,7 +12,9 @@
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.18",
         "laravel/tinker": "^2.9",
+        "mollie/laravel-mollie": "^3.1",
         "opcodesio/log-viewer": "^3.15",
         "spatie/laravel-activitylog": "^4.9"
     },
