@@ -33,7 +33,7 @@ class OrganisationPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->can('create_organisation');
     }
 
     /**
@@ -41,8 +41,7 @@ class OrganisationPolicy
      */
     public function update(User $user, Organisation $organisation): bool
     {
-        return true;
-        // return $usergetUrl->can('update_organisation');
+        return $user->can('update_organisation');
     }
 
     /**

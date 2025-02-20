@@ -27,7 +27,7 @@ class Organisation extends Model implements HasMedia, HasAvatar, HasCurrentTenan
     ];
 
     /**
-     * On creation make slug from name
+     * On creation make slug from name and update slug on update.
      */
     protected static function boot()
     {
