@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "laravel: start (Enter)",
+            "type": "shell",
+            "detail": "Starting Laravel development server",
+            "command": "php artisan serve --host=192.168.2.64 --port=8000",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+    ]
+}
