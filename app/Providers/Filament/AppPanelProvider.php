@@ -68,6 +68,8 @@ class AppPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make(),
             ])
+            ->viteTheme('resources/css/filament/app/theme.css')
+            ->darkMode(false)
             ->authMiddleware([
                 Authenticate::class,
             ]);
