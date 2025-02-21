@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Listeners\UpdateLatestTenantIdListener;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Permission;
 use App\Models\Role;
-use Filament\Events\TenantSet;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 

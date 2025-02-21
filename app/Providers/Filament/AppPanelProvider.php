@@ -37,6 +37,7 @@ class AppPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Stone,
             ])
+            ->brandLogo(fn () => view('mysubs-logo'))
             ->tenantMenu(true)
             ->tenant(Organisation::class, ownershipRelationship: 'organisation', slugAttribute: 'slug')
             ->tenantMiddleware([
